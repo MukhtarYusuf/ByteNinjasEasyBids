@@ -38,6 +38,16 @@ router.route('/:id').get(async (req, res) => {
     }
 });
 
+// GET: Get one User by Email
+router.route('/email/:email').get(async (req, res) => {
+    try {
+        const user = await UsersHelper.getUserByEmail(req.params.email);
+        res.json(user);
+    } catch(err) {
+        res.status(400).json('Error: ' + err);
+    }
+});
+
 // POST: Add a User
 router.route('/add').post(async (req, res) => {
     try {
@@ -63,6 +73,26 @@ router.route('/delete/:id').delete(async (req, res) => {
     try {
         await UsersHelper.deleteUser(req.params.id);
         res.json('Successfully Deleted');
+    } catch(err) {
+        res.status(400).json('Error: ' + err);
+    }
+});
+
+// POST: Purchase Tokens
+router.route('/token-purchase').post(async (req, res) => {
+    try {
+        await UsersHelper.purchaseTokens(req.body.userId, req.body.tokenCount);
+        res.json('Successfully Purchased');
+    } catch(err) {
+        res.status(400).json('Error: ' + err);
+    }
+});
+
+// POST: Pay for Product
+router.route('/pay-for-product').post(async (req, res) => {
+    try {
+        await UsersHelper.payForProduct(req.body.userId, req.body.productId);
+        res.json('Payment Success');
     } catch(err) {
         res.status(400).json('Error: ' + err);
     }

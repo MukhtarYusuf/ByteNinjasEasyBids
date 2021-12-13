@@ -2,13 +2,21 @@ const Admin = require('../models/admin.model');
 
 // Get all Admins
 async function getAllAdmins() {
-    const admins = await Admin.find.exec();
+    const admins = await Admin.find().exec();
     return admins;
 }
 
 // Get one Admin
 async function getAdmin(adminId) {
     const admin = await Admin.findById(adminId).exec();
+    return admin;
+}
+
+// Get one Admin by Email
+async function getAdminByEmail(adminEmail) {
+    const adminArray = await Admin.where('email').equals(adminEmail).exec();
+    const admin = (adminArray.length === 0) ? null : adminArray[0];
+
     return admin;
 }
 
@@ -45,6 +53,7 @@ async function deleteAdmin(adminId) {
 
 module.exports.getAllAdmins = getAllAdmins;
 module.exports.getAdmin = getAdmin;
+module.exports.getAdminByEmail = getAdminByEmail;
 module.exports.addAdmin = addAdmin;
 module.exports.updateAdmin = updateAdmin;
 module.exports.deleteAdmin = deleteAdmin;

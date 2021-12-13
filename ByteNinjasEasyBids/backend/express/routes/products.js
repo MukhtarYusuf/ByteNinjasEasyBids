@@ -41,25 +41,6 @@ router.route('/update/:id').put(async (req, res) => {
     } catch (err) {
         res.status(400).json('Error: ' + err);
     }
-
-    // Product.findById(req.params.id)
-    //     .then(product => {
-    //         product.name = req.body.name;
-    //         product.description = req.body.description;
-    //         product.sellerId = req.body.sellerId;
-    //         product.startTime = Number(req.body.startTime);
-    //         product.duration = Number(req.body.duration);
-    //         product.biddingPrice = Number(req.body.biddingPrice);
-    //         product.minSellingPrice = Number(req.body.minSellingPrice);
-    //         product.participants = req.body.participants;
-    //         product.winner = req.body.winner;
-    //         product.shippingStatus = req.body.shippingStatus;
-
-    //         product.save()
-    //             .then(() => res.json('Successfully Updated'))
-    //             .catch(err => res.status(400).json('Error: ' + err));
-    //     })
-    //     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // DELETE: Delete a Product

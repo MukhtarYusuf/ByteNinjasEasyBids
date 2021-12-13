@@ -2,7 +2,7 @@ const Product = require('../models/product.model');
 
 // Get all Products
 async function getAllProducts() {
-    const products = await Product.find().exec();
+    const products = await Product.find().sort({ startTime: 'asc' }).exec();
     return products;
 }
 
@@ -19,12 +19,13 @@ async function addProduct(product) {
     const sellerId = product.sellerId;
     const startTime = product.startTime;
     const duration = product.duration;
+    const timeLeft = product.duration;
     const originalPrice = product.originalPrice;
     const biddingPrice = product.biddingPrice;
     const minSellingPrice = product.minSellingPrice;
     const participants = product.participants;
-    const winner = product.winner;
-    const shippingStatus = product.shippingStatus;
+    const winnerUsername = '';
+    const status = product.status;
 
     const newProduct = new Product({ 
         name, 
@@ -32,15 +33,16 @@ async function addProduct(product) {
         sellerId, 
         startTime, 
         duration,
+        timeLeft,
         originalPrice,
         biddingPrice, 
         minSellingPrice, 
         participants,
-        winner,
-        shippingStatus,
+        winnerUsername,
+        status,
     });
 
-    await newProduct.save()
+    await newProduct.save();
 }
 
 // Update a Product
@@ -52,11 +54,12 @@ async function updateProduct(productId, product) {
     productToUpdate.sellerId = product.sellerId;
     productToUpdate.startTime = Number(product.startTime);
     productToUpdate.duration = Number(product.duration);
+    productToUpdate.timeLeft = Number(product.timeLeft);
     productToUpdate.biddingPrice = Number(product.biddingPrice);
     productToUpdate.minSellingPrice = Number(product.minSellingPrice);
     productToUpdate.participants = product.participants;
-    productToUpdate.winner = product.winner;
-    productToUpdate.shippingStatus = product.shippingStatus;
+    productToUpdate.winnerUsername = product.winnerUsername;
+    productToUpdate.status = product.status;
 
     await productToUpdate.save();
 }
@@ -66,8 +69,14 @@ async function deleteProduct(productId) {
     await Product.findByIdAndDelete(productId).exec();
 }
 
+// Bulk Save
+async function bulkSaveProducts(products) {
+    await Product.bulkSave(products);
+}
+
 module.exports.getAllProducts = getAllProducts;
 module.exports.getProduct = getProduct;
 module.exports.addProduct = addProduct;
 module.exports.updateProduct = updateProduct;
 module.exports.deleteProduct = deleteProduct;
+module.exports.bulkSaveProducts = bulkSaveProducts;
