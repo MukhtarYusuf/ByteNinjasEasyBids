@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const syncProducts = require('../web socket/webSocket').syncProducts;
 
 // Get all Products
 async function getAllProducts() {
@@ -43,6 +44,7 @@ async function addProduct(product) {
     });
 
     await newProduct.save();
+    await syncProducts();
 }
 
 // Update a Product
@@ -62,11 +64,13 @@ async function updateProduct(productId, product) {
     productToUpdate.status = product.status;
 
     await productToUpdate.save();
+    await syncProducts();
 }
 
 // Delete a Product
 async function deleteProduct(productId) {
     await Product.findByIdAndDelete(productId).exec();
+    await syncProducts();
 }
 
 // Bulk Save

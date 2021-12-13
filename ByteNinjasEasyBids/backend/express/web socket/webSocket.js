@@ -32,7 +32,7 @@ async function setupSocket(server) {
             counter = 0;
 
             if (connections === 0) {
-                await syncProducts();
+                await bulkSaveProducts();
             }
 
             console.log('disconnected from web socket');
@@ -110,7 +110,7 @@ async function placeBid(userId, productId) {
     return response;
 }
 
-async function syncProducts() {
+async function bulkSaveProducts() {
     persistingProducts = [...products];
     
     try {
@@ -121,4 +121,16 @@ async function syncProducts() {
     }
 }
 
+async function syncProducts() {
+    try {
+        await bulkSaveProducts();
+        persistingProducts = await ProductsHelper.getAllProducts();
+
+        products = [...persistingProducts];
+    } catch(err) {
+        console.log('Error: ' + err);
+    }
+}
+
 module.exports.setupSocket = setupSocket;
+module.exports.syncProducts = syncProducts;
